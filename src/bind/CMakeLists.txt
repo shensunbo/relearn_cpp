@@ -1,0 +1,1 @@
+add_executable(bind_base main.cpp base.cpp)
