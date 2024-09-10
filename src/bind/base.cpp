@@ -52,5 +52,17 @@ void bind_class_test(){
 }
 
 void bind_lambda_test(){
-    //TODO: 
+    std::function<int(int)> add = std::bind(std::plus<int>(), std::placeholders::_1, 2);
+    std::function<int(int)> custom_add = [add](int x) { return add(x) * 20; };
+    int ret = custom_add(1);
+    std::cout<<"bind_lambda_test1 "<< ret<<std::endl; //ret = 60
+
+    //when the api need a 1 params function as input param, you can use bind to change a 2 params function to 1 param
+    auto fAdd2 = std::bind(std::plus<float>(), _1, 2.0f);
+    auto lambda_test2 = [](std::function<float(float)> add2)->float {
+        float ret = 1000.0f + add2(0.05f);
+        return ret;
+    };
+    float fRet = lambda_test2(fAdd2);
+    std::cout<<"lambda_test2 "<<fRet<<std::endl; //1002.05f
 }

@@ -1,6 +1,6 @@
 #include "base.h"
 
 int main(){
-    bind_class_test();
+    bind_lambda_test();
     return 0;
 }
