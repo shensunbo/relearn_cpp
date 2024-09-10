@@ -85,7 +85,9 @@ void foreach(std::vector<T>& vec, F operate) {
     }
 }
 
+//NOTE: template argument deduction, This feature was introduced in C++17
 void bind_high_order_func(){
+    // C++17
     {
         std::vector<int> numbers = {1, 2, 3};
         auto trible = std::bind(std::multiplies<int>(), std::placeholders::_1, 3);
@@ -94,13 +96,15 @@ void bind_high_order_func(){
         std::cout<<"trible "<<numbers.at(0)<<" "<<numbers.at(1)<<" "<<numbers.at(2)<<std::endl;
     }
 
+    // C++14
     {
         std::vector<int> numbers = {1, 2, 3};
         auto plus10 = std::bind(std::plus<int>(), std::placeholders::_1, 10);
-        foreach(numbers, plus10);
+        foreach<>(numbers, plus10);
         std::cout<<"plus10 "<<numbers.at(0)<<" "<<numbers.at(1)<<" "<<numbers.at(2)<<std::endl;
     }
 
+    // less than C++14
     {
         std::vector<int> numbers = {1, 2, 3};
         auto minus5 = std::bind(std::minus<int>(), std::placeholders::_1, 5);
