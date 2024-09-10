@@ -66,3 +66,54 @@ void bind_lambda_test(){
     float fRet = lambda_test2(fAdd2);
     std::cout<<"lambda_test2 "<<fRet<<std::endl; //1002.05f
 }
+
+void bind_algo_adapt_test(){
+    std::vector<int> numbers = {1, 2, 3, 4, 5};
+    // transform(_InputIterator __first, _InputIterator __last, _OutputIterator __result, _UnaryOperation __unary_op)
+    std::transform(numbers.begin(), numbers.end(), numbers.begin(),
+                   std::bind(std::multiplies<int>(), std::placeholders::_1, 2));
+    for(auto i:numbers){
+        std::cout<<i<<" "; //2 4 6 8 10 
+    }
+    std::cout<<std::endl;
+}
+
+template <typename T, typename F>
+void foreach(std::vector<T>& vec, F operate) {
+    for (T& elem : vec) {
+        elem = operate(elem);
+    }
+}
+
+void bind_high_order_func(){
+    {
+        std::vector<int> numbers = {1, 2, 3};
+        auto trible = std::bind(std::multiplies<int>(), std::placeholders::_1, 3);
+        //the compiler can infer the type, maybe try to explore when learn template
+        foreach(numbers, trible);
+        std::cout<<"trible "<<numbers.at(0)<<" "<<numbers.at(1)<<" "<<numbers.at(2)<<std::endl;
+    }
+
+    {
+        std::vector<int> numbers = {1, 2, 3};
+        auto plus10 = std::bind(std::plus<int>(), std::placeholders::_1, 10);
+        foreach(numbers, plus10);
+        std::cout<<"plus10 "<<numbers.at(0)<<" "<<numbers.at(1)<<" "<<numbers.at(2)<<std::endl;
+    }
+
+    {
+        std::vector<int> numbers = {1, 2, 3};
+        auto minus5 = std::bind(std::minus<int>(), std::placeholders::_1, 5);
+        //assign a specific template type
+        foreach<int, std::function<int(int)>>(numbers, minus5);
+        std::cout<<"minus5 "<<numbers.at(0)<<" "<<numbers.at(1)<<" "<<numbers.at(2)<<std::endl;
+    }
+
+    {
+        std::vector<float> numbers = {1.0f, 2.0f, 3.0f};
+        auto minus10 = std::bind(std::minus<float>(), std::placeholders::_1, 10.05f);
+        //assign a specific template type
+        foreach(numbers, minus10);
+        std::cout<<"minus10 float "<<numbers.at(0)<<" "<<numbers.at(1)<<" "<<numbers.at(2)<<std::endl;
+    }
+}

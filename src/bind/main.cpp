@@ -1,6 +1,6 @@
 #include "base.h"
 
 int main(){
-    bind_lambda_test();
+    bind_high_order_func();
     return 0;
 }
