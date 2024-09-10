@@ -113,7 +113,7 @@ void bind_high_order_func(){
         std::vector<float> numbers = {1.0f, 2.0f, 3.0f};
         auto minus10 = std::bind(std::minus<float>(), std::placeholders::_1, 10.05f);
         //assign a specific template type
-        foreach(numbers, minus10);
+        foreach(numbers, minus10);//<float, std::function<float(float)>>
         std::cout<<"minus10 float "<<numbers.at(0)<<" "<<numbers.at(1)<<" "<<numbers.at(2)<<std::endl;
     }
 }
