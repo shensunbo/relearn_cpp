@@ -6,6 +6,7 @@
 #include <typeindex>
 #include <stdexcept>
 #include <shared_mutex>
+#include "mylog.h"
 
 class Attribute {
 public:
@@ -54,8 +55,9 @@ public:
         for (const auto& handler : handlers) {
             try {
                 handler(oldValue, value_);
-            } catch (...) {
-                // Optional: log exception, but do not interrupt other handlers
+            } catch (const std::exception& e) {
+                mylog(MyLogLevel::E, "[Attribute] Exception in value change handler: %s", e.what());
+                assert(false && "Exception in value change handler");
             }
         }
     }

@@ -17,20 +17,16 @@ template<> struct MessagePayloadType<MessageId::MyNewMessage> { using type = MyP
 */
 
 #pragma once
-#include "PayloadDefine.h"
 #include <string>
 #include <variant>
-
+//
+// msg id and method definitions
+//
 enum class MessageId {
-    Temperature,
-    Position,
-    AppConfig,
-    LogMessage,
-    UserInfo,
-    DeviceStatus,
-    DataPacket,
-    Nested,
-    Settings,
+    ServiceProvider,
+    WANConnInfo,
+    CallInfo,
+    PrivateswitchState,
 };
 
 enum class MessageMethod {
@@ -39,6 +35,34 @@ enum class MessageMethod {
     GET_ACK,
     SET_ACK,
 };
+
+// 
+// payload type definitions, support basic types, structs, and nested complex types
+//
+
+enum class WANConnInfoType {
+    NoNetwork = 0,
+    Connecting,
+    Net2G,
+    Net3G,
+    Net4G,
+    Net5G,
+};
+
+enum class CallInfoType {
+    ICallIncoming = 0x01,
+    ICallDialing = 0x03,
+    ICallOutgoing = 0x04,
+    Idel = 0x05,
+    ECallIncoming = 0x06,
+    ECallDialing = 0x07,
+    ECallOutgoing = 0x08,
+};
+
+
+//
+//  MessageId <-> Payload type mapping
+//
 
 // Forward declaration
 template<MessageId ID>
@@ -49,25 +73,16 @@ template<MessageId ID>
 using PayloadType = typename MessagePayloadType<ID>::type;
 
 // Specializations
-template<> struct MessagePayloadType<MessageId::Temperature> { using type = int; };
-template<> struct MessagePayloadType<MessageId::Position>    { using type = Point; };
-template<> struct MessagePayloadType<MessageId::AppConfig>   { using type = Config; };
-template<> struct MessagePayloadType<MessageId::LogMessage>  { using type = std::string; };
-template<> struct MessagePayloadType<MessageId::UserInfo>    { using type = User; };
-template<> struct MessagePayloadType<MessageId::DeviceStatus> { using type = DeviceStatus; };
-template<> struct MessagePayloadType<MessageId::DataPacket>  { using type = DataPacket; };
-template<> struct MessagePayloadType<MessageId::Nested>      { using type = Nested; };
-template<> struct MessagePayloadType<MessageId::Settings>    { using type = Settings; };
+template<> struct MessagePayloadType<MessageId::ServiceProvider> { using type = std::string; };
+template<> struct MessagePayloadType<MessageId::WANConnInfo>    { using type = WANConnInfoType; };
+template<> struct MessagePayloadType<MessageId::CallInfo>   { using type = CallInfoType; };
+template<> struct MessagePayloadType<MessageId::PrivateswitchState>  { using type = bool; };
+
 
 // Collect all possible payload types
 using AllPayloads = std::variant<
-    PayloadType<MessageId::Temperature>,
-    PayloadType<MessageId::Position>,
-    PayloadType<MessageId::AppConfig>,
-    PayloadType<MessageId::LogMessage>,
-    PayloadType<MessageId::UserInfo>,
-    PayloadType<MessageId::DeviceStatus>,
-    PayloadType<MessageId::DataPacket>,
-    PayloadType<MessageId::Nested>,
-    PayloadType<MessageId::Settings>
+    PayloadType<MessageId::ServiceProvider>,
+    PayloadType<MessageId::WANConnInfo>,
+    PayloadType<MessageId::CallInfo>,
+    PayloadType<MessageId::PrivateswitchState>
 >;

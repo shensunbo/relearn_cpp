@@ -2,9 +2,8 @@ cc_library(
     name = "msgqueue",
     hdrs = [
         "Message.h",
-        "MsgQueue.h",
+        "MessageQueue.h",
         "MsgDefine.h",
-        "PayloadDefine.h",
         "MsgUtils.h",
     ],
     # srcs = [
