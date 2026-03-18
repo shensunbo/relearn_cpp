@@ -7,13 +7,13 @@ struct Message {
     MessageMethod method;
     AllPayloads payload;
 
-    // 构造函数模板（类型安全）
+    // Constructor template (type safe)
     template<MessageId ID>
     static Message make(MessageMethod m, PayloadType<ID> value) {
         return Message{ID, m, AllPayloads(std::move(value))};
     }
 
-    // 安全获取 payload
+    // Safely get payload
     template<MessageId ID>
     const PayloadType<ID>& getPayload() const {
         return std::get<PayloadType<ID>>(payload);

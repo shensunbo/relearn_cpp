@@ -1,5 +1,5 @@
 #pragma once
-// message_queue.hpp
+// Message queue implementation
 #include <queue>
 #include <mutex>
 #include <condition_variable>
